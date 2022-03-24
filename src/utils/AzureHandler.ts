@@ -6,9 +6,7 @@ export class AzureHandler {
   private readonly _baseUrl = `https://dev.azure.com/${process.env.AZURE_ORGANISATION}/${process.env.AZURE_PROJECT}/_apis`;
   private readonly _version = `?api-version=${process.env.AZURE_API_VERSION}`;
 
-  constructor() { 
-    // this._baseUrl = `https://dev.azure.com/${process.env.AZURE_ORGANISATION}/${process.env.AZURE_PROJECT}/_apis[ROUTE]?api-version=${process.env.AZURE_API_VERSION}`;
-  }
+  constructor() { }
 
   private getItems = async (): Promise<AxiosResponse<any, any>> => {
     return await axios.post(`${this._baseUrl}/wit/wiql${this._version}`, {
@@ -55,12 +53,7 @@ export class AzureHandler {
     }));
     return workItems
       .filter((x: any) => x.data.fields['System.State'] === 'Active' || x.data.fields['System.State'] === 'New')
-      .map<IWorkItemSerialized>((x: any) => {
-        const item: IWorkItem = x.data;
-        if (item.fields['System.State'] === 'Active' || item.fields['System.State'] === 'New') {
-          return this.serializeResponse(item);
-        }
-      });
+      .map<IWorkItemSerialized>((x: any) => this.serializeResponse(x.data));
   }
 
   getWorkItem = async (id: number): Promise<IWorkItemSerialized> => {
