@@ -1,0 +1,22 @@
+paths:
+  /users:
+    get:
+      description: Get all users
+      parameters:
+        - in: query
+          name: offset
+          type: string
+          required: true
+          description: The offset for pagniation
+        - in: query
+          name: query
+          type: string
+          required: false
+          description: The query to filter users
+      responses:
+        200:
+          description: Success
+        400:
+          description: Validation error
+        500:
+          description: Internal server error
