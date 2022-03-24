@@ -1,0 +1,184 @@
+paths:
+  /work-items:
+    get:
+      description: Get all work items
+      parameters:
+        - in: query
+          name: offset
+          type: string
+          required: true
+          description: The offset for pagniation
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/workItems'
+        400:
+          description: Validation error
+        500:
+          description: Internal server error
+  /work-items/:id:
+    get:
+      description: Get specific work item
+      parameters:
+        - in: path
+          name: id
+          type: int
+          required: true
+          description: ID for the requested work item
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/workItem'
+        400:
+          description: Validation error
+        500:
+          description: Internal server error
+    patch:
+      description: Update a specific work item
+      parameters:
+        - in: path
+          name: id
+          type: int
+          required: true
+          description: ID for the requested work item
+      requestBody:
+        description: Object used to update work item
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/workItem'
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/workItem'
+        400:
+          description: Validation error
+        500:
+          description: Internal server error
+definitions:
+  workItems:
+    type: array
+    properties:
+      ticket_no:
+        type: string
+      created_date:
+        type: date
+      created_by:
+        type: string
+      title:
+        type: string
+      hours_lost:
+        type: int
+      status:
+        type: string
+      assigned_to:
+        type: string
+      status_comments:
+        type: string
+      next_update_date:
+        type: date
+      changed_date:
+        type: date
+      changed_by:
+        type: string
+      forecast_delivery_date:
+        type: date
+      requested_for_date:
+        type: date
+      board_column:
+        type: string
+      business_contact:
+        type: string
+      tags:
+        type: string
+      priority_no:
+        type: string
+      area_path:
+        type: string
+    example:
+      [
+        {
+          ticket_no: '1',
+          created_date: '2022-03-23T12:18:06.626Z',
+          created_by: 'User #1',
+          title: 'Example Title',
+          hours_lost: 0,
+          status: 'To Do',
+          assigned_to: 'User #2',
+          status_comments: 'Example Comment',
+          next_update_date: '2022-03-23T12:18:06.626Z',
+          changed_date: '2022-03-23T12:18:06.626Z',
+          changed_by: 'User #1',
+          forecast_delivery_date: '2022-03-23T12:18:06.626Z',
+          requested_for_date: '2022-03-23T12:18:06.626Z',
+          board_column: 'Example Column',
+          business_contact: 'Example Contact',
+          tags: 'Tag1, Tag2',
+          priority_no: 'Example Priority No',
+          area_path: 'Example Area Path'
+        }
+      ]
+  workItem:
+    type: object
+    properties:
+      ticket_no:
+        type: string
+      created_date:
+        type: date
+      created_by:
+        type: string
+      title:
+        type: string
+      hours_lost:
+        type: int
+      status:
+        type: string
+      assigned_to:
+        type: string
+      status_comments:
+        type: string
+      next_update_date:
+        type: date
+      changed_date:
+        type: date
+      changed_by:
+        type: string
+      forecast_delivery_date:
+        type: date
+      requested_for_date:
+        type: date
+      board_column:
+        type: string
+      business_contact:
+        type: string
+      tags:
+        type: string
+      priority_no:
+        type: string
+      area_path:
+        type: string
+    example:
+      {
+        ticket_no: '1',
+        created_date: '2022-03-23T12:18:06.626Z',
+        created_by: 'User #1',
+        title: 'Example Title',
+        hours_lost: 0,
+        status: 'To Do',
+        assigned_to: 'User #2',
+        status_comments: 'Example Comment',
+        next_update_date: '2022-03-23T12:18:06.626Z',
+        changed_date: '2022-03-23T12:18:06.626Z',
+        changed_by: 'User #1',
+        forecast_delivery_date: '2022-03-23T12:18:06.626Z',
+        requested_for_date: '2022-03-23T12:18:06.626Z',
+        board_column: 'Example Column',
+        business_contact: 'Example Contact',
+        tags: 'Tag1, Tag2',
+        priority_no: 'Example Priority No',
+        area_path: 'Example Area Path'
+      }
