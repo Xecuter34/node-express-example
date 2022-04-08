@@ -1,5 +1,5 @@
 import IWorkItemService from "../interfaces/services/IWorkItemService";
-import { IWorkItemSerialized } from "../interfaces/IWorkItem";
+import { IWorkItemSerialized, IWorkItemSerializedWithRevision } from "../interfaces/IWorkItem";
 import { AzureHandler } from "../utils/AzureHandler";
 import { IJsonPatchDocument } from "../interfaces/IJsonPatchDocument";
 import { getWorkItemPath } from "../utils/general";
@@ -31,5 +31,9 @@ export class WorkItemService implements IWorkItemService {
       return false;
     }
     return true;
+  }
+
+  getWorkItemHistory = async (ticket_id: number, date?: Date): Promise<IWorkItemSerializedWithRevision[]> => {
+    return await this._azureHandler.getWorkItemHistory(ticket_id, date);
   }
 }

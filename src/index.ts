@@ -5,7 +5,7 @@ import swaggerUI from 'swagger-ui-express';
 import { ValidationError } from 'yup';
 import { IJsonPatchDocument } from './interfaces/IJsonPatchDocument';
 import { IWorkItemSerialized } from './interfaces/IWorkItem';
-import { workItemAllSchema, workItemSchema, userSchema, workItemRequestSchema } from './schemas/schemas';
+import { workItemAllSchema, workItemSchema, userSchema, workItemRequestSchema, workItemDateSchema } from './schemas/schemas';
 import { WorkItemService } from './services/WorkItemService'
 
 if (process.env.NODE_ENV !== 'production') {
@@ -72,6 +72,20 @@ app.patch('/work-items/:id', async (req, res) => {
     const body: Omit<IWorkItemSerialized, 'ticket_no'> = await workItemRequestSchema.validate(req.body);
     const workItemService = new WorkItemService();
     res.json({ status: await workItemService.updateWorkItem(params.id, body) });
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      return res.status(400).json({ error: err.message });
+    };
+    return res.status(500).json({ status: false });
+  }
+});
+
+app.get('/work-items/:id/history', async (req, res) => {
+  try {
+    const params = await workItemSchema.validate(req.params);
+    const query = await workItemDateSchema.validate(req.query);
+    const workItemService = new WorkItemService();
+    res.json(await workItemService.getWorkItemHistory(params.id, query.changedBy));
   } catch (err) {
     if (err instanceof ValidationError) {
       return res.status(400).json({ error: err.message });

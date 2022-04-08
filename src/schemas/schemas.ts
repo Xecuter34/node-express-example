@@ -42,3 +42,7 @@ export const workItemRequestSchema = yup.object({
   tags: yup.string().notRequired(), 
   priority_no: yup.string().notRequired()
 });
+
+export const workItemDateSchema = yup.object({
+  changedBy: yup.date()
+});

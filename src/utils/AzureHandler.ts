@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { IJsonPatchDocument } from '../interfaces/IJsonPatchDocument';
-import { IWorkItemBasic, IWorkItem, IWorkItemSerialized } from '../interfaces/IWorkItem';
+import { IWorkItemBasic, IWorkItem, IWorkItemSerialized, IWorkItemSerializedWithRevision } from '../interfaces/IWorkItem';
 
 export class AzureHandler {
   private readonly _baseUrl = `https://dev.azure.com/${process.env.AZURE_ORGANISATION}/${process.env.AZURE_PROJECT}/_apis`;
@@ -74,5 +74,21 @@ export class AzureHandler {
       }
     });
     return this.serializeResponse(updatedWorkItem.data);
+  }
+
+  getWorkItemHistory = async (id: number, date?: Date): Promise<IWorkItemSerializedWithRevision[]> => {
+    const response = await axios.get<{ value: IWorkItem[] }>(`${this._baseUrl}/wit/workitems/${id}/revisions${this._version}`, {
+      auth: {
+        username: '',
+        password: process.env.AZURE_TOKEN
+      }
+    });
+    let dataValue = response.data.value;
+
+    if (date) {
+      dataValue = dataValue.filter(x => new Date(x.fields['System.ChangedDate']) >= date);
+    }
+    
+    return dataValue.map<IWorkItemSerializedWithRevision>((x: IWorkItem) => Object.assign(this.serializeResponse(x), { rev: x.rev }));
   }
 }

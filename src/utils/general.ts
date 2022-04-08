@@ -33,7 +33,7 @@ export const getWorkItemPath = (item: string): string => {
     case 'tags':
       return '/fields/System.Tags';
     case 'board_column':
-      return '/fields/System.BoardColumn';
+      return '/fields/WEF_683705E9E2C24420AE06D9B50338A1B0_Kanban.Column';
     case 'priority_no':
       return '/fields/Custom.PriorityNo';
     default:

@@ -169,6 +169,6 @@ export interface IWorkItemSerialized {
 	area_path: string;
 }
 
-export const getSerializedItem = (workItemSerialized: IWorkItemSerialized, property: keyof IWorkItemSerialized) => {
-
+export interface IWorkItemSerializedWithRevision extends IWorkItemSerialized {
+	rev: number;
 }
